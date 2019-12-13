@@ -10,7 +10,12 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+var (
+	CurrUser IUser
+)
+
 type IUser interface {
+	GetID() uint
 	Insert() error
 	GetPassword() string
 	UpdateToken(token string) error
@@ -70,7 +75,12 @@ func ValidateToken(token string) (bool, error) {
 	if uP == nil {
 		return false, nil
 	}
+	CurrUser = &u
 	return true, nil
+}
+
+func (u *user) GetID() uint {
+	return u.ID
 }
 
 func (u *user) Insert() error {

@@ -33,3 +33,19 @@ func AuthenticateUser(w http.ResponseWriter, r *http.Request) {
 		libs.OK(w, u.GetToken())
 	}
 }
+
+func UserTransaction(w http.ResponseWriter, r *http.Request) {
+	if d, err := models.GetUserTransaction(); err != nil {
+		libs.InternalServerError(w, err)
+	} else {
+		libs.OK(w, d)
+	}
+}
+
+func UserExpense(w http.ResponseWriter, r *http.Request) {
+	if d, err := models.GetUserExpense(); err != nil {
+		libs.InternalServerError(w, err)
+	} else {
+		libs.OK(w, d)
+	}
+}
