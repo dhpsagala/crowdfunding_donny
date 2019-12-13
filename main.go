@@ -2,13 +2,17 @@ package main
 
 import (
 	"fmt"
-	"github.com/dhpsagala/crowdfunding_donny/controllers"
-	"github.com/gorilla/mux"
 	"net/http"
 	"os"
+
+	"github.com/dhpsagala/crowdfunding_donny/controllers"
+	"github.com/dhpsagala/crowdfunding_donny/models"
+	"github.com/gorilla/mux"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
+	models.InitDb()
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api", controllers.Index).Methods("GET")

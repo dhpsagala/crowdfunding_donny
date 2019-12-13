@@ -3,14 +3,39 @@ package libs
 import (
 	"encoding/json"
 	"net/http"
+	"reflect"
 )
 
-func String(w http.ResponseWriter, message string) {
-	w.Header().Add("Content-Type", "text/plain")
-	w.Write([]byte(message))
+func writeResponse(httpStatus int, w http.ResponseWriter, data interface{}) {
+	w.WriteHeader(httpStatus)
+	w.Header().Add("Content-Type", "application/json")
+	if data != nil {
+		errorInterface := reflect.TypeOf((*error)(nil)).Elem()
+		dataType := reflect.TypeOf(data)
+		if dataType.Implements(errorInterface) {
+			json.NewEncoder(w).Encode(data.(error).Error())
+			return
+		}
+	}
+	json.NewEncoder(w).Encode(data)
 }
 
-func Json(w http.ResponseWriter, data map[string]interface{}) {
-	w.Header().Add("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(data)
+func OK(w http.ResponseWriter, data interface{}) {
+	writeResponse(http.StatusOK, w, data)
+}
+
+func NotFound(w http.ResponseWriter, data interface{}) {
+	writeResponse(http.StatusNotFound, w, data)
+}
+
+func BadRequest(w http.ResponseWriter, data interface{}) {
+	writeResponse(http.StatusBadRequest, w, data)
+}
+
+func InternalServerError(w http.ResponseWriter, data interface{}) {
+	writeResponse(http.StatusInternalServerError, w, data)
+}
+
+func Unauthorized(w http.ResponseWriter, data interface{}) {
+	writeResponse(http.StatusUnauthorized, w, data)
 }

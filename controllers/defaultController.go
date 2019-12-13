@@ -6,9 +6,9 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	libs.String(w, "Hello")
+	libs.OK(w, "Hello")
 }
 
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
-	libs.String(w, "Healthy")
+	libs.OK(w, "Healthy")
 }
