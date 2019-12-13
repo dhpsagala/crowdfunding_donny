@@ -9,10 +9,15 @@ import (
 	"github.com/dhpsagala/crowdfunding_donny/libs"
 	"github.com/dhpsagala/crowdfunding_donny/models"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		fmt.Println("Error loading .env file")
+	}
+
 	models.InitDb()
 	router := mux.NewRouter()
 
